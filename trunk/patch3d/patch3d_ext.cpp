@@ -42,7 +42,7 @@ vector<data_t>::iterator p, p_end;
   };
 
 
-/*define the input structur*/
+/*define the input structure*/
   struct inStructure
   {
     int ncol;
