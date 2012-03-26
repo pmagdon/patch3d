@@ -92,7 +92,7 @@ inStructure extent(inStructure input){
       tmp[x+1][y+1]=matrix[x+(nx)*(y)];
     }
   }
-     //Extract first and last line of the original dataset
+     //Extract first and last line of the original data set
   for(int x=0; x<nx;x++){
     firstline[x]=tmp[x+1][1];
     lastline[x]=tmp[x+1][ny]; //Problem
@@ -184,13 +184,12 @@ inStructure import_ascii_grid(string path)
 	string line;
 
 	getline( infile, line );
-	// now we'll use a stringstream to separate the fields out of the line
+	// now we'll use a string stream to separate the fields out of the line
 	stringstream ss( line );
 	string field;
 	while (getline( ss, field, ' ' ))
 	  {
-	    // for each field we wish to convert it to a double
-	    // (since we require that the CSV contains nothing but floating-point values)
+	    //  each field is converted it to a double
 	    stringstream fs( field );
 	    double f = 0.0;  // (default value is 0.0)
 	    fs >> f;
@@ -221,9 +220,7 @@ inStructure import_ascii_grid(string path)
 int export_results(string outfile, string fileid, outStructure input){
   FILE * pFile;
   pFile =fopen (outfile.c_str(),"w");
-  //ofstream output;
-  //output.open(outfile.c_str(),ios::trunc);
-  //if(output.is_open()){
+
   fprintf (pFile,"%-2s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\t %-11s\n",
 	   "ID","area3d","area","perimeter","perimeter3d","para","para3d","frac","frac3d","shape","shape3d","ncell", "nedge");
    for (int p=0;p<input.ID.size();p++){
@@ -234,9 +231,6 @@ int export_results(string outfile, string fileid, outStructure input){
 
   fclose(pFile);
   return 0;
-  //}
-  //else { cout<<"Unable to open output file";
-  //  return 1;}
 }
 
 
@@ -249,14 +243,16 @@ double triarea(double a, double b, double c){
   		return(sqrt(s*(s-a)*(s-b)*(s-c)));
 		}
 //----------------------------------------------------------------------------
-/* Define function for shape index calulation according to Hoechstetter et al 2008*/
+
+/* Define function for shape index calculation according to Hoechstetter et al 2008*/
+
 double shapeindex(double perimeter,double area){
   double ret=(0.25*perimeter)/(sqrt(area));
   return ret;
 }
 
 
-/* Define function for the caluculation of fractal dimension*/
+/* Define function for the calculation of fractal dimension*/
 
 double fractaldim(double perimeter, double area){
   double ret=(2*log(0.25*perimeter))/log(area);
@@ -283,8 +279,6 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
     dem[i]=in_dem.values[i];
   }
 
-
-
   //vector<double> IDs;
    vector<int>::iterator p, p_end;
 
@@ -295,7 +289,7 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
   p_end = unique(output.ID.begin(),output.ID.end());  // remove duplicates
   output.ID.erase(p_end,output.ID.end());
 
-  // Set everything to sero
+  // Set everything to zero
   for(int i=0; i<output.ID.size() ;i++){
     output.sarea.push_back(0);
     output.sperimeter.push_back(0);
@@ -317,10 +311,10 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
   int npatch = output.ID.size();
   int ncold=ncol+2;
   int nrowd=nrow+2;
-  double car,cpi,np,ni;               //temporary values represetning cellArea, cellPerim
+  double car,cpi,np,ni;               //temporary values representing cellArea, cellPerim
   int tval, rook[4];    //values of the 9 cells of interest
-  double z1,z2,z3;              // point values for each triangel
-  double l1,l2,l3;              // side lengths for each triangel
+  double z1,z2,z3;              // point values for each triangle
+  double l1,l2,l3;              // side lengths for each triangle
   double s2 = sqrt(pow(cellx,2)+pow(celly,2)); //diagonal length depending  the raster size
   double side[]={s2,cellx,s2,celly,s2,cellx,s2,celly,s2}; // triangle side lengths
   //Rotation matrix
@@ -336,7 +330,7 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
     for (int col=0;col<ncol;col++){
       tval = ls[row*ncol+col];
       ni=np=0;
-      car=cpi=0.0; // Set cell area and perimeter to sero
+      car=cpi=0.0; // Set cell area and perimeter to zero
       //go clockwise through the eight neighbouring cells and collect patch ids//
       rook[0]  = (row>0)       ? ls[(row-1)*ncol+col]:-9999; // One step North
       rook[1]  = (col<ncol-1)  ? ls[(row)*ncol+(col+1)]:-9999; // One step East
@@ -347,14 +341,14 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
       z1 = height(dem,ncold,col+1,row+1);
       for(int tri=0;tri<8;tri++){
 
-	// Do surface area caluclations
+	// Do surface area calculations
         z2=height(dem,ncold,col+1+dxv[tri],row+1+dyv[tri]);
 	z3=height(dem,ncold,col+1+dxv[tri+1],row+1+dyv[tri+1]);
-        // Lentgh of trinagles
+        // Lenght of trinagles
 	l1 = 0.5 * sqrt(side[tri]*  side[tri]  +(z1-z2)*(z1-z2));
 	l2 = 0.5 * sqrt(side[tri+1]*side[tri+1]+(z1-z3)*(z1-z3));
 	l3 = 0.5 * sqrt(l3v[tri]*l3v[tri]+(z2-z3)*(z2-z3));
-        //caluculate area of triangle
+        //calculate area of triangle
 	car += triarea(l1,l2,l3);
 
 	// Do perimeter calculations
@@ -387,9 +381,8 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
 
       }
       for (int ii=0;ii<4;ii++){if (tval==rook[ii]){ni++;} else {np++;}}
-      //output.ID[tval]=int(tval);
 
-      //Set place cellvalues in output structure
+      //Set cell values in output structure
       for(int ii=0;ii<npatch;ii++){
 	if(output.ID[ii]==tval){
 	  output.ncell[ii]      ++;
@@ -401,7 +394,7 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
       }
     }
   }
-  //Calculate 2D perimeter and area based on cellsize
+  //Calculate 2D perimeter and area based on cell size
   for(int ii=0;ii<npatch;ii++){
     output.area[ii]=output.ncell[ii]*(cellx*celly);
     output.perimeter[ii]=output.nedge[ii]*(cellx);
@@ -426,11 +419,10 @@ outStructure patch3d(inStructure in_ls, inStructure in_dem)
 }
 
 int main(int argc, const char *argv[])
-//int main()
 {
  if (argc != 4) {
    cout<<argc;
-    printf("Usage: iml_exe dem ls \n");
+    printf("Usage: patch3d dem ls \n");
      return 1;
         }
 
@@ -441,15 +433,16 @@ int main(int argc, const char *argv[])
  outStructure result;
  //Import elevation model
   inStructure elev=import_ascii_grid(dem_in);
- cout << "DEM Imported \n";
+  cout << "DEM Imported \n";
+
  //Import landscape model
-
  inStructure ls=import_ascii_grid(ls_in);
-cout << "Landscape Imported \n";
-// Extent elevation model by first / last row / colum
- inStructure elev_ext=extent(elev);
- // Performe 3d analysis of the binarie landscape
+ cout << "Landscape Imported \n";
 
+ // Extent elevation model by first / last row / col
+ inStructure elev_ext=extent(elev);
+
+ // Perform 3d analysis of the binary landscape
  result=patch3d(ls,elev_ext);
  // Export results
  export_results(outfile, ls_in,result);
