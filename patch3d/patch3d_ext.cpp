@@ -422,7 +422,7 @@ int main(int argc, const char *argv[])
 {
  if (argc != 4) {
    cout<<argc;
-    printf("Usage: patch3d dem ls \n");
+    printf("Usage: patch3d <dem file> <patch map> <result file> \n");
      return 1;
         }
 
