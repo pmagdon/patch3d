@@ -1,0 +1,23 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+The manual follows here
+
+
+= Details =
+
+
+= Usage =
+
+== Inputs ==
+<dem_file> An ESRI ascii Grid with the elevation height. Must have the same extent, resolution and coordinate system as the patch_map 
+<patch_map> An ESRI ascii Grid with the patches as unique 
+
+== Outputs ==
+<output_file> Writes a table to the output file where the landscape metrics for each patch ID are listed
+
+== Comand ==
+{{{
+./patch3d <dem_file> <patch_map> <output_file>
+}}}
