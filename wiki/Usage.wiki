@@ -11,8 +11,8 @@ The manual follows here
 = Usage =
 
 == Inputs ==
-<dem_file> An ESRI ascii Grid with the elevation height. Must have the same extent, resolution and coordinate system as the patch_map 
-<patch_map> An ESRI ascii Grid with the patches as unique 
+<dem_file> ESRI ascii Grid with the elevation height. Must have the same extent, resolution and coordinate system as the patch_map 
+<patch_map> ESRI ascii Grid with the patches identified by unique ID's 
 
 == Outputs ==
 <output_file> Writes a table to the output file where the landscape metrics for each patch ID are listed
